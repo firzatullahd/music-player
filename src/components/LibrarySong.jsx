@@ -1,5 +1,4 @@
 import React from "react";
-import { playAudio } from "../util/func";
 
 function LibrarySong({ song, songs, setSongs, setCurrentSong, audioRef, isPlaying}) {
   const songSelectHandler = async() => {
@@ -18,9 +17,9 @@ function LibrarySong({ song, songs, setSongs, setCurrentSong, audioRef, isPlayin
         };
       }
     });
-    setCurrentSong(song);
-    setSongs(newSongs);
-    await playAudio(isPlaying, audioRef);
+    await setCurrentSong(song);
+    await setSongs(newSongs);
+    if(isPlaying) await audioRef.current.play();
   }
   return (
     <div className={song.active ? "library-song selected" : "library-song"} onClick={songSelectHandler} >

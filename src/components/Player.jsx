@@ -6,7 +6,6 @@ import {
   faStepBackward, 
   faPause
 } from "@fortawesome/free-solid-svg-icons";
-import { playAudio } from "../util/func";
 
 function Player({ 
   currentSong, 
@@ -16,33 +15,16 @@ function Player({
   songInfo,
   setSongInfo, 
   songs, 
-  setSongs,
-  setCurrentSong 
+  setCurrentSong,
+  activeLibraryHandler 
 }) {
-  
-  const activeLibraryHandler = (nextPrevSong) => {
-    const newSongs = songs.map(song => {
-      if (song.id === nextPrevSong.id) {
-        return {
-          ...song, 
-          active:true
-        };
-      }
-      else {
-        return{
-          ...song, 
-          active:false
-        };
-      }
-    });
-    setSongs(newSongs);
-  }
-  const playSongHandler = () => {
+
+  const playSongHandler = async () => {
     if(isPlaying) {
-      audioRef.current.pause();
+      await audioRef.current.pause();
       setIsPlaying(!isPlaying);
     } else {
-      audioRef.current.play();
+      await audioRef.current.play();
       setIsPlaying(!isPlaying);
     }
   };
@@ -68,19 +50,19 @@ function Player({
       if((currentIndex - 1) % songs.length === -1){
         await setCurrentSong(songs[songs.length - 1]);
         activeLibraryHandler(songs[songs.length - 1]);
-        playAudio(isPlaying,audioRef);
+        if(isPlaying) await audioRef.current.play();
         return;
       }
       await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
       activeLibraryHandler(songs[(currentIndex - 1) % songs.length]);
     }
-    playAudio(isPlaying,audioRef);
+    if(isPlaying) await audioRef.current.play();
   }
   return (
     <div className="player">
       <div className="time-control">
         <p>{getTime(songInfo.currentTime)}</p>
-        <div className="track">
+        <div className="track" style={{background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`}}>
           <input 
           type="range" 
           min={0}
@@ -88,7 +70,7 @@ function Player({
           value={songInfo.currentTime}
           onChange={onDragHandler}
           />
-          <div className="track-animation"></div>
+          <div style={{ transform : `translateX(${songInfo.animationPercentage}%)`}} className="track-animation"></div>
         </div>
         <p>{songInfo.duration ? getTime(songInfo.duration) : "0.00"}</p>
       </div>

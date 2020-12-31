@@ -25,7 +25,6 @@
          -webkit-appearance: none;
          width: 16px;
          height: 16px;
-         background: black;
        }
      }
       background: lightblue;
@@ -43,6 +42,7 @@
         top: 0;
         left: 0;
         transform: translateX(0%);
+        pointer-events: none;
       }
     }
     p {
