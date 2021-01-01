@@ -19,12 +19,12 @@ function Player({
   activeLibraryHandler 
 }) {
 
-  const playSongHandler = async () => {
+  const playSongHandler = () => {
     if(isPlaying) {
-      await audioRef.current.pause();
+      audioRef.current.pause();
       setIsPlaying(!isPlaying);
     } else {
-      await audioRef.current.play();
+      audioRef.current.play();
       setIsPlaying(!isPlaying);
     }
   };
@@ -35,9 +35,9 @@ function Player({
     );
   }
 
-  const onDragHandler = e => {
+  const onDragHandler = async (e) => {
     audioRef.current.currentTime = e.target.value;
-    setSongInfo({...songInfo, currentTime:e.target.value
+    await setSongInfo({...songInfo, currentTime:e.target.value
     });
   }
   const onSkipHandler = async(dir) => {
@@ -50,13 +50,13 @@ function Player({
       if((currentIndex - 1) % songs.length === -1){
         await setCurrentSong(songs[songs.length - 1]);
         activeLibraryHandler(songs[songs.length - 1]);
-        if(isPlaying) await audioRef.current.play();
+        if(isPlaying) audioRef.current.play();
         return;
       }
       await setCurrentSong(songs[(currentIndex - 1) % songs.length]);
       activeLibraryHandler(songs[(currentIndex - 1) % songs.length]);
     }
-    if(isPlaying) await audioRef.current.play();
+    if(isPlaying) audioRef.current.play();
   }
   return (
     <div className="player">

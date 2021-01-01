@@ -19,7 +19,7 @@ function LibrarySong({ song, songs, setSongs, setCurrentSong, audioRef, isPlayin
     });
     await setCurrentSong(song);
     await setSongs(newSongs);
-    if(isPlaying) await audioRef.current.play();
+    if(isPlaying) audioRef.current.play();
   }
   return (
     <div className={song.active ? "library-song selected" : "library-song"} onClick={songSelectHandler} >
