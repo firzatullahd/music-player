@@ -52,7 +52,7 @@ function App() {
   };
 
   return (
-    <div className={libraryStatus ? "App library-active" : "App"}>
+    <main className={libraryStatus ? "App library-active" : "App"}>
       <Nav libraryStatus={libraryStatus} setLibraryStatus={setLibraryStatus} />
       <Song currentSong={currentSong} />
       <Player
@@ -81,7 +81,7 @@ function App() {
         src={currentSong.audio}
         onEnded={songEndHandler}
       ></audio>
-    </div>
+    </main>
   );
 }
 
